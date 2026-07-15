@@ -20,11 +20,13 @@ const currentSearch = reactive ({
 // Naviagtion Handlers
 const navigateTo = (view) => {
     currentView.value = view
+    window.scrollTo(0, 0)
 }
 
 const openPoem = (poem) => {
     selectedPoem.value = poem
     currentView.value = 'poem'
+    window.scrollTo(0, 0)
 }
 
 const fetchRandom = async () => {
