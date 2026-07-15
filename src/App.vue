@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import Sidebar from './components/Sidebar.vue'
 import Search from './components/Search.vue'
 import PoemDetail from './components/PoemDetail.vue'
+import About from './components/About.vue'
 
 //Central Application State
 const currentView = ref('search') // Available views: search, poem, about
@@ -27,8 +28,21 @@ const openPoem = (poem) => {
 }
 
 const fetchRandom = async () => {
-    // API logic will go here later
-    console.log('Random poem requested')
+    try {
+            const response = await fetch('https://poetrydb.org/random/1')
+            const data = await response.json()
+
+            if (Array.isArray(data) && data.length > 0) {
+                selectedPoem.value = data[0]
+                currentView.value = 'poem'
+
+                // Clearing out search results so nav controls don't show
+                currentSearch.results = []
+            }
+
+    } catch (error) {
+        console.error('Failed to fetch random poem:', error)
+    }
 }
 </script>
 
@@ -59,7 +73,7 @@ const fetchRandom = async () => {
                 </div>
 
                 <div v-else-if="currentView === 'about'">
-                    <p>About View Placeholder</p>
+                    <About />
                 </div>
 
             </div>
