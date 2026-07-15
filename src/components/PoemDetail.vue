@@ -16,6 +16,17 @@ const currentIndex = computed(() => {
 
 const prevPoem = computed(() => currentIndex.value > 0 ? props.results[currentIndex.value - 1] : null)
 const nextPoem = computed(() => currentIndex.value < props.results.length - 1 ? props.results[currentIndex.value + 1] : null)
+
+const typeScaleClass = computed(() => {
+    if (!props.poem || !props.poem.lines) return 'text-[1.2rem]'
+
+    const longestLine = Math.max(...props.poem.lines.map(line => line.length))
+
+    if (longestLine > 75) return 'text-[0.9rem]'
+    if (longestLine > 60) return 'text-[1rem]'
+    if (longestLine > 45) return 'text-[1.1rem]'
+    return 'text-[1.2rem]'
+})
 </script>
 
 <template>
@@ -45,7 +56,7 @@ const nextPoem = computed(() => currentIndex.value < props.results.length - 1 ? 
       <h2 class="text-2xl text-meta mb-2">{{ poem.author }}</h2>
       <p class="text-sm italic font-sans text-meta tracking-wide mb-12">{{ poem.linecount }} lines</p>
 
-      <div class="font-text text-ink text-left whitespace-pre-wrap selection:bg-next/10 text-[1.2rem] leading-[1.6]">
+      <div :class="['font-text text-ink text-left whitespace-pre-wrap selection:bg-next/10 leading-[1.6]', typeScaleClass]">
         {{ poem.lines.join('\n') }}
       </div>
     </div>

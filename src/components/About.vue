@@ -14,7 +14,7 @@
       <p>
         All data is fetched dynamically from the public PoetryDB archive, indexing thousands of classic works from timeless poets across centuries of literature.
       </p>
-      <p class="pt-4 border-t border-stone-200/40 text-sm font-sans text-meta">
+      <p class="pt-4 border-t border-stone-200/40 text-sm font-text text-meta">
         Built with Vue, Vite, and Tailwind CSS.
       </p>
     </div>
