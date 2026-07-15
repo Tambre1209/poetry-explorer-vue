@@ -2,6 +2,7 @@
 import { ref, reactive } from 'vue'
 import Sidebar from './components/Sidebar.vue'
 import Search from './components/Search.vue'
+import PoemDetail from './components/PoemDetail.vue'
 
 //Central Application State
 const currentView = ref('search') // Available views: search, poem, about
@@ -48,7 +49,13 @@ const fetchRandom = async () => {
                 </div>
 
                 <div v-else-if="currentView === 'poem'">
-                    <p>Poem Detail Placeholder</p>
+                    <PoemDetail
+                        :poem="selectedPoem"
+                        :results="currentSearch.results"
+                        :currentSearch="currentSearch"
+                        @navigate="navigateTo"
+                        @open-poem="openPoem"
+                    />
                 </div>
 
                 <div v-else-if="currentView === 'about'">
