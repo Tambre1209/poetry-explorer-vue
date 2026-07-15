@@ -9,7 +9,7 @@
       <span class="text-xl font-bold uppercase text-ink">Poetry Explorer</span>
       <div class="flex gap-5 text-sm font-bold uppercase">
         <button @click="emit('navigate', 'search')" :class="[currentView === 'search' ? 'text-accent' : 'text-ink']">Search</button>
-        <button @click="emit('fetch-random')" class="text-ink">Random</button>
+        <button @click="emit('fetch-random')" :class="[currentView === 'random' ? 'text-accent' : 'text-ink']">Random</button>
         <button @click="emit('navigate', 'about')" :class="[currentView === 'about' ? 'text-accent' : 'text-ink']">About</button>
       </div>
     </header>

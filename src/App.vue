@@ -35,27 +35,24 @@ const apiError = ref(null)
 
 // Random Poem Fetcher
 const fetchRandom = async () => {
-    isLoading.value = true //start loading
-    apiError.value = null //reset error
+    isLoading.value = true
+    apiError.value = null
+    currentView.value = 'random' // Fix: Set view to 'random' to enable sidebar highlight
     try {
-            const response = await fetch('https://poetrydb.org/random/1')
-            const data = await response.json()
+        const response = await fetch('https://poetrydb.org/random/1')
+        const data = await response.json()
 
-            if (Array.isArray(data) && data.length > 0) {
-                selectedPoem.value = data[0]
-                currentView.value = 'poem'
-
-                // Clearing out search results so nav controls don't show
-                currentSearch.results = []
-            } else {
-                throw new Error('No poem found')
-            }
-
+        if (Array.isArray(data) && data.length > 0) {
+            selectedPoem.value = data[0]
+            currentView.value = 'random' // Fix: Maintain state for active nav
+            currentSearch.results = []
+        } else {
+            throw new Error('No poem found')
+        }
     } catch (error) {
         apiError.value = 'Failed to load random poem. Please try again.'
-        console.error('Failed to fetch random poem:', error)
     } finally {
-        isLoading.value = false //end loading
+        isLoading.value = false
     }
 }
 </script>
@@ -73,10 +70,11 @@ const fetchRandom = async () => {
           @fetch-random="fetchRandom" 
         />
 
-        <div v-if="apiError" class="text-center py-20 text-next font-bold">{{ apiError }}</div>
 
         <main class="flex-1 bg-poem-bg md:rounded-l-3xl relative overflow-hidden" style="box-shadow: -15px 0 45px -5px rgba(0,0,0,0.08);">
             <div class="max-w-3xl mx-auto w-full px-5 md:px-20 py-10 md:py-16">
+                
+                <div v-if="apiError" class="text-center py-20 text-next font-bold">{{ apiError }}</div>
 
                 <div v-if="currentView === 'search'">
                     <Search
@@ -87,7 +85,7 @@ const fetchRandom = async () => {
                     />
                 </div>
 
-                <div v-else-if="currentView === 'poem'">
+                <div v-else-if="currentView === 'poem' || currentView === 'random'">
                     <PoemDetail
                         :poem="selectedPoem"
                         :results="currentSearch.results"
