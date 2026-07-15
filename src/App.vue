@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import Sidebar from './components/Sidebar.vue'
+import Search from './components/Search.vue'
 
 //Central Application State
 const currentView = ref('search') // Available views: search, poem, about
@@ -39,7 +40,11 @@ const fetchRandom = async () => {
             <div class="max-w-3xl mx-auto w-full px-5 md:px-20 py-10 md:py-16">
 
                 <div v-if="currentView === 'search'">
-                    <p>Search View Placeholder</p>
+                    <Search
+                        :currentSearch="currentSearch"
+                        :apiCache="apiCache"
+                        @open-poem="openPoem"
+                    />
                 </div>
 
                 <div v-else-if="currentView === 'poem'">
