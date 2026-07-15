@@ -49,7 +49,7 @@ const executeSearch = async () => {
   <div>
     <div class="mb-12 border-b border-stone-200/40 pb-8">
       <form @submit.prevent="executeSearch" class="flex flex-col sm:flex-row gap-3">
-        <select v-model="currentSearch.type" class="bg-transparent border-b border-stone-400 py-1 px-2 focus:outline-none focus:border-[#2D4A3E] text-base">
+        <select v-model="currentSearch.type" class="bg-transparent border-b border-stone-400 py-1 px-2 focus:outline-none focus:border-accent text-base font-primary">
           <option value="author">Author</option>
           <option value="title">Title</option>
         </select>
@@ -59,13 +59,13 @@ const executeSearch = async () => {
           v-model="currentSearch.query"
           placeholder="Type poet or title name..."
           required
-          class="flex-1 bg-transparent border-b border-stone-400 py-1 px-2 focus:outline-none focus:border-[#2D4A3E] placeholder-stone-400 text-lg"
+          class="flex-1 bg-transparent border-b border-stone-400 py-1 px-2 focus:outline-none focus:border-accent placeholder-stone-400 text-lg font-primary"
         />
 
         <button
           type="submit"
           :disabled="isSearching"
-          class="text-sm font-bold uppercase tracking-wider text-[#2D4A3E] hover:text-[#722F37] transition-colors px-4 py-1"
+          class="text-sm font-bold uppercase tracking-wider text-accent hover:text-next transition-colors px-4 py-1 font-submit"
         >
           {{ isSearching ? 'Searching...' : 'Search Archive' }}
         </button>
@@ -74,12 +74,12 @@ const executeSearch = async () => {
 
     <div id="search-results-target">
       <div v-if="apiError" class="text-center py-20 border border-dashed border-stone-200 rounded bg-[#F4F0E6]/30">
-        <p class="italic text-[#722F37] text-lg font-bold">Network Delay</p>
+        <p class="italic text-next text-lg font-bold">Network Delay</p>
         <p class="text-xs text-stone-400 mt-2 font-mono">{{ apiError }}</p>
       </div>
 
       <div v-else-if="currentSearch.results && currentSearch.results.length > 0" class="space-y-8 animate-fade-in">
-        <div class="text-xs font-mono uppercase tracking-widest text-[#605E5A] border-b border-stone-200/60 pb-2">
+        <div class="text-xs font-mono uppercase tracking-widest text-meta border-b border-stone-200/60 pb-2">
           Found {{ currentSearch.results.length }} matches in archive
         </div>
         
@@ -90,15 +90,15 @@ const executeSearch = async () => {
               class="w-full text-left group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-3 px-4 rounded hover:bg-stone-200/50 -mx-4 transition-all duration-150"
             >
               <div class="space-y-1">
-                <h3 class="text-xl font-bold text-[#1C1B1A] group-hover:text-[#722F37] transition-colors">
+                <h3 class="text-xl font-bold text-ink group-hover:text-accent transition-colors">
                   {{ poem.title }}
                 </h3>
-                <p class="text-sm text-[#605E5A]">
+                <p class="text-sm text-meta">
                   by {{ poem.author }}
                 </p>
               </div>
               
-              <span class="text-xs font-mono text-[#605E5A] group-hover:text-[#2D4A3E] transition-colors whitespace-nowrap">
+              <span class="text-xs font-mono text-meta group-hover:text-next transition-colors whitespace-nowrap">
                 {{ poem.linecount }} lines <span class="group-hover:translate-x-1 inline-block transition-transform">→</span>
               </span>
             </button>
@@ -107,7 +107,7 @@ const executeSearch = async () => {
       </div>
 
       <div v-else-if="currentSearch.query && !isSearching && currentSearch.results.length === 0" class="text-center py-20 border border-dashed border-stone-200 rounded bg-[#F4F0E6]/30">
-        <p class="italic text-[#605E5A] text-lg">The archives are silent.</p>
+        <p class="italic text-meta text-lg">The archives are silent.</p>
         <p class="text-xs text-stone-400 mt-2 font-mono">No matching records found. Verify spelling or switch parameters.</p>
       </div>
 

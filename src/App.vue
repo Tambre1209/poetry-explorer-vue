@@ -47,11 +47,11 @@ const fetchRandom = async () => {
 </script>
 
 <template>
-    <div class="flex flex-col md:flex-row min-h-screen w-full bg-[#FCF5E5] overflow-x-hidden">
+    <div class="flex flex-col md:flex-row min-h-screen w-full bg-nav-bg overflow-x-hidden">
 
         <Sidebar @navigate="navigateTo" @fetch-random="fetchRandom" />
 
-        <main class="flex-1 bg-[#FBF9F4] md:rounded-l-3xl relative overflow-hidden" style="box-shadow: -15px 0 45px -5px rgba(0,0,0,0.08);">
+        <main class="flex-1 bg-poem-bg md:rounded-l-3xl relative overflow-hidden" style="box-shadow: -15px 0 45px -5px rgba(0,0,0,0.08);">
             <div class="max-w-3xl mx-auto w-full px-5 md:px-20 py-10 md:py-16">
 
                 <div v-if="currentView === 'search'">
