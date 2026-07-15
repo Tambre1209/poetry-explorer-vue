@@ -51,11 +51,16 @@ State is managed natively through a centralized object in App.vue and passed dow
 
 ## Installation & Local Execution
 
-1. Ensure Node.js is configured locally.
+1. Ensure Node.js `20.19+` or `22.12+` is installed locally (required by this project's Vite toolchain).
 2. Clone the repository and navigate to the project directory.
 3. Install the project dependencies:
    npm install
 4. Start the local Vite development server:
    npm run dev
 5. Open your browser to the local network port indicated in your terminal window.
+
+### Production Build (optional)
+To verify the app compiles cleanly for production:
+   npm run build
+The optimized output is written to the `dist/` directory.
 
