@@ -1,7 +1,16 @@
 # Poetry Explorer
 ### Developer: Joshua Armendariz
 
-A responsive, single page reading interface focused entirely on the typographic layout and structural preservation of classic literature. The application interacts with the public PoetryDB API to provide a clean, enjoyable reading experience.
+A responsive, single page reading interface focused entirely on the typographic layout and structural preservation of classic literature. The application interacts with the public PoetryDB API to provide a clean, enjoyable reading experience. This project is a migration of the poetry-explorer application I created as a part of a code challenge. This was created as a proof of concept using Vue. Although functional, there are some slight differences to the form and function of this application compared to the application written utilizing HTMX.
+
+---
+
+## Core Requirements Implemented
+
+- **Search by Author:** Full text lookup against the PoetryDB `/author` endpoint, returning all matching works.
+- **Search by Title:** Full text lookup against the PoetryDB `/title` endpoint, returning all matching works.
+- **Results Display:** Alphabetized list view showing title, author, and line count for every match.
+- **Poem Detail View:** Full text rendering with title, author, and line count metadata, reachable from any result.
 
 ---
 
@@ -17,26 +26,26 @@ This repository was built using an iterative, AI collaborative workflow to maxim
 ## Implemented Features
 
 ### 1. In Memory Client Caching
-During development it was discovered that there are frequent periods of high latency and timeout bottlenecks on the public PoetryDB endpoint. A global cache layer interceptor was built on the client side. Successful payloads are retained in memory. Cached search queries and specific poem views load under 2 milliseconds on subsequent clicks, minimizing external server reliance.
+During development it was discovered that there are frequent periods of high latency and timeout bottlenecks on the public PoetryDB endpoint. A cache layer was built into the client's search requests, checked before each search is dispatched. Successful payloads are retained in memory. Cached search queries load instantly on repeat lookups. Poem detail views render directly from already-fetched result data, with no additional network request.
 
 ### 2. Typographic Scaling
-Poems wrapping text to the following line breaks the structural intent of the author. The rendering engine measures both total line count and the exact character length of the longest verse line at runtime. The layout scales across four discrete inline font-size tiers to ensure wide lines never wrap awkwardly onto new rows on desktop viewports.
+A poem that wraps onto an unintended new line loses the author's structural intent. The rendering engine measures both total line count and the exact character length of the longest verse line at runtime. The layout scales across four discrete inline font-size tiers to ensure wide lines never wrap awkwardly onto new rows on desktop viewports.
 
 ### 3. State-Aware Search Pagination
-When viewing a poem from a search list, the application calculates index boundaries. It automatically suppresses the previous control on the first entry, suppresses the next control on the final entry, and includes a button that recalls the exact search parameter state directly from cache.
+When viewing a poem from a search list, the application calculates index boundaries. It automatically suppresses the previous control on the first entry, suppresses the next control on the final entry, and includes a button that returns to the exact search results already held in the application state. This requires no additional network request.
 
 ### 4. Random Discovery View
 A sidebar link that targets and pulls individual arbitrary works from the archive database. This view completely bypasses standard search index logic and safely hides pagination headers.
 
-### 5. Canvas Design Details
-- **Top Panel Progress Indicator:** A minimal loading bar at the top of the canvas that flashes dynamically on asynchronous network calls.
+### 5. Viewport Design Details
+- **Top Panel Progress Indicator:** A minimal loading bar at the top of the viewport that flashes dynamically on asynchronous network calls.
 - **Negative-Margin Hover Tracking:** Row highlights expand seamlessly via layout offsets, indicating selection without shifting text alignments.
-- **Layered Dimension:** The reading canvas features a left-hand 24px vertical curve combined with a deep drop shadow to lift the text surface above the controller panel.
+- **Layered Dimension:** On desktop, the reading panel features a left-hand 24px vertical curve combined with a deep drop shadow to lift the text surface above the controller panel.
 
 ---
 
 ## A Note on State Management
-State is managed natively through a centralized object in App.vue and passed down via prop drilling. Because the applciation component tree maxes out at three levels deep, this avoids needing a separate dedicated state library like Pinia. This can be refactored into a composable later if desired.
+State is managed natively through a centralized object in App.vue and passed down via prop drilling. Because the application component tree maxes out at two levels deep, this avoids needing a separate dedicated state library like Pinia. This can be refactored into a composable later if desired.
 
 ---
 

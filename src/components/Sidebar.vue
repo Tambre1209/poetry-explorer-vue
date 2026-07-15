@@ -1,16 +1,18 @@
 <script setup>
+    defineProps({ currentView: String })
     const emit = defineEmits(['navigate', 'fetch-random'])
 </script>
 
 <template>
   <!-- Mobile Navigation -->
-  <header class="bg-nav-bg px-6 py-4 border-b border-stone-200/40 flex justify-between items-center md:hidden shrink-0">
-    <span class="text-xl font-bold uppercase text-ink">Poetry Explorer</span>
-    <div class="flex gap-5 text-sm font-bold uppercase">
-      <button @click="emit('navigate', 'search')" class="text-accent">Search</button>
-      <button @click="emit('fetch-random')" class="text-ink hover:text-accent transition-colors">Random</button>
-    </div>
-  </header>
+    <header class="bg-nav-bg px-6 py-4 border-b border-stone-200/40 flex justify-between items-center md:hidden shrink-0">
+      <span class="text-xl font-bold uppercase text-ink">Poetry Explorer</span>
+      <div class="flex gap-5 text-sm font-bold uppercase">
+        <button @click="emit('navigate', 'search')" :class="[currentView === 'search' ? 'text-accent' : 'text-ink']">Search</button>
+        <button @click="emit('fetch-random')" class="text-ink">Random</button>
+        <button @click="emit('navigate', 'about')" :class="[currentView === 'about' ? 'text-accent' : 'text-ink']">About</button>
+      </div>
+    </header>
 
   <!-- Desktop Sidebar -->
   <aside class="w-72 bg-nav-bg px-10 py-12 hidden md:flex flex-col gap-12 shrink-0 h-screen sticky top-0 self-start border-r border-stone-200/40">
@@ -26,9 +28,9 @@
     </div>
 
     <nav class="flex flex-col gap-6 text-xl items-start">
-      <button @click="emit('navigate', 'search')" class="text-accent hover:opacity-80 transition-opacity">Search</button>
-      <button @click="emit('fetch-random')" class="text-ink hover:text-accent transition-colors">Random Discover</button>
-      <button @click="emit('navigate', 'about')" class="text-ink hover:text-accent transition-colors">About</button>
+      <button @click="emit('navigate', 'search')" :class="[currentView === 'search' ? 'text-accent' : 'text-ink']">Search</button>
+      <button @click="emit('fetch-random')" :class="[currentView === 'random' ? 'text-accent' : 'text-ink']">Random Discover</button>
+      <button @click="emit('navigate', 'about')" :class="[currentView === 'about' ? 'text-accent' : 'text-ink']">About</button>
     </nav>
   </aside>
 </template>

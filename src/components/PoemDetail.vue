@@ -18,14 +18,16 @@ const prevPoem = computed(() => currentIndex.value > 0 ? props.results[currentIn
 const nextPoem = computed(() => currentIndex.value < props.results.length - 1 ? props.results[currentIndex.value + 1] : null)
 
 const typeScaleClass = computed(() => {
-    if (!props.poem || !props.poem.lines) return 'text-[1.2rem]'
+  if (!props.poem || !props.poem.lines) return 'text-[1.2rem]'
 
-    const longestLine = Math.max(...props.poem.lines.map(line => line.length))
+  const longestLine = Math.max(...props.poem.lines.map(line => line.length))
+  const lineCount = props.poem.linecount || 0
 
-    if (longestLine > 75) return 'text-[0.9rem]'
-    if (longestLine > 60) return 'text-[1rem]'
-    if (longestLine > 45) return 'text-[1.1rem]'
-    return 'text-[1.2rem]'
+  // Dual-parameter logic: Scale down if very wide OR very long
+  if (longestLine > 70 || lineCount > 60) return 'text-[0.9rem]'
+  if (longestLine > 55 || lineCount > 40) return 'text-[1rem]'
+  if (longestLine > 40 || lineCount > 20) return 'text-[1.1rem]'
+  return 'text-[1.2rem]'
 })
 </script>
 

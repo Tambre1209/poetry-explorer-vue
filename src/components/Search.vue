@@ -11,7 +11,10 @@ const emit = defineEmits(['open-poem', 'set-loading'])
 const isSearching = ref(false)
 const apiError = ref(null)
 
+const hasSearched = ref(false)
+
 const executeSearch = async () => {
+  hasSearched.value = true
   if (!props.currentSearch.query.trim()) return
 
   isSearching.value = true
@@ -19,7 +22,7 @@ const executeSearch = async () => {
   apiError.value = null
   props.currentSearch.results = []
 
-  const url = `https://poetrydb.org/${props.currentSearch.type}/${props.currentSearch.query}`
+  const url = `https://poetrydb.org/${props.currentSearch.type}/${encodeURIComponent(props.currentSearch.query)}`
 
   if (props.apiCache[url]) {
     props.currentSearch.results = props.apiCache[url]
@@ -71,7 +74,7 @@ const executeSearch = async () => {
         <button
           type="submit"
           :disabled="isSearching"
-          class="text-sm font-bold uppercase tracking-wider text-accent hover:text-next transition-colors px-4 py-1 font-submit"
+          class="text-sm font-bold uppercase tracking-wider text-accent hover:text-next transition-colors px-4 py-1 font-text"
         >
           {{ isSearching ? 'Searching...' : 'Search Archive' }}
         </button>
@@ -112,9 +115,8 @@ const executeSearch = async () => {
         </ul>
       </div>
 
-      <div v-else-if="currentSearch.query && !isSearching && currentSearch.results.length === 0" class="text-center py-20 border border-dashed border-stone-200 rounded bg-[#F4F0E6]/30">
+      <div v-else-if="hasSearched && !isSearching && currentSearch.results.length === 0" class="text-center py-20 border border-dashed border-stone-200 rounded bg-[#F4F0E6]/30">
         <p class="italic text-meta text-lg">The archives are silent.</p>
-        <p class="text-xs text-stone-400 mt-2 font-mono">No matching records found. Verify spelling or switch parameters.</p>
       </div>
 
       <div v-else class="text-center py-20">

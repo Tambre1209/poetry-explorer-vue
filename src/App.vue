@@ -30,9 +30,13 @@ const openPoem = (poem) => {
     window.scrollTo(0, 0)
 }
 
+// API Error
+const apiError = ref(null)
+
 // Random Poem Fetcher
 const fetchRandom = async () => {
     isLoading.value = true //start loading
+    apiError.value = null //reset error
     try {
             const response = await fetch('https://poetrydb.org/random/1')
             const data = await response.json()
@@ -43,9 +47,12 @@ const fetchRandom = async () => {
 
                 // Clearing out search results so nav controls don't show
                 currentSearch.results = []
+            } else {
+                throw new Error('No poem found')
             }
 
     } catch (error) {
+        apiError.value = 'Failed to load random poem. Please try again.'
         console.error('Failed to fetch random poem:', error)
     } finally {
         isLoading.value = false //end loading
@@ -60,7 +67,13 @@ const fetchRandom = async () => {
             <div class="h-full bg-accent animate-pulse w-full"></div>
         </div>
 
-        <Sidebar @navigate="navigateTo" @fetch-random="fetchRandom" />
+        <Sidebar 
+          :currentView="currentView" 
+          @navigate="navigateTo" 
+          @fetch-random="fetchRandom" 
+        />
+
+        <div v-if="apiError" class="text-center py-20 text-next font-bold">{{ apiError }}</div>
 
         <main class="flex-1 bg-poem-bg md:rounded-l-3xl relative overflow-hidden" style="box-shadow: -15px 0 45px -5px rgba(0,0,0,0.08);">
             <div class="max-w-3xl mx-auto w-full px-5 md:px-20 py-10 md:py-16">
