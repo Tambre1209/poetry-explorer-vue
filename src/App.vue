@@ -9,6 +9,7 @@ import About from './components/About.vue'
 const currentView = ref('search') // Available views: search, poem, about
 const apiCache = reactive ({})
 const selectedPoem = ref(null)
+const isLoading = ref(false) // Global loading state
 
 // Search State
 const currentSearch = reactive ({
@@ -29,7 +30,9 @@ const openPoem = (poem) => {
     window.scrollTo(0, 0)
 }
 
+// Random Poem Fetcher
 const fetchRandom = async () => {
+    isLoading.value = true //start loading
     try {
             const response = await fetch('https://poetrydb.org/random/1')
             const data = await response.json()
@@ -44,12 +47,18 @@ const fetchRandom = async () => {
 
     } catch (error) {
         console.error('Failed to fetch random poem:', error)
+    } finally {
+        isLoading.value = false //end loading
     }
 }
 </script>
 
 <template>
-    <div class="flex flex-col md:flex-row min-h-screen w-full bg-nav-bg overflow-x-hidden">
+    <div class="flex flex-col md:flex-row min-h-screen w-full bg-nav-bg">
+        
+        <div v-show="isLoading" class="fixed top-0 left-0 w-full h-1.5 z-50">
+            <div class="h-full bg-accent animate-pulse w-full"></div>
+        </div>
 
         <Sidebar @navigate="navigateTo" @fetch-random="fetchRandom" />
 
@@ -61,6 +70,7 @@ const fetchRandom = async () => {
                         :currentSearch="currentSearch"
                         :apiCache="apiCache"
                         @open-poem="openPoem"
+                        @set-loading="(status) => isLoading = status"
                     />
                 </div>
 

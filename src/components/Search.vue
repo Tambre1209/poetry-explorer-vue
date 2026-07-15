@@ -6,7 +6,7 @@ const props = defineProps({
   apiCache: Object
 })
 
-const emit = defineEmits(['open-poem'])
+const emit = defineEmits(['open-poem', 'set-loading'])
 
 const isSearching = ref(false)
 const apiError = ref(null)
@@ -15,6 +15,7 @@ const executeSearch = async () => {
   if (!props.currentSearch.query.trim()) return
 
   isSearching.value = true
+  emit('set-loading', true)
   apiError.value = null
   props.currentSearch.results = []
 
@@ -23,6 +24,7 @@ const executeSearch = async () => {
   if (props.apiCache[url]) {
     props.currentSearch.results = props.apiCache[url]
     isSearching.value = false
+    emit('set-loading', false)
     return
   }
 
@@ -31,7 +33,10 @@ const executeSearch = async () => {
     const data = await response.json()
 
     if (Array.isArray(data) && data.length > 0 && !data[0].status) {
-      const sorted = data.sort((a, b) => a.title.localeCompare(b.title))
+      // Force case-insensitive alphabetical sorting
+      const sorted = data.sort((a, b) => 
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+      )
       props.apiCache[url] = sorted
       props.currentSearch.results = sorted
     } else {
@@ -41,6 +46,7 @@ const executeSearch = async () => {
     apiError.value = 'The poetry database took too long to respond. Please try again.'
   } finally {
     isSearching.value = false
+    emit('set-loading', false)
   }
 }
 </script>

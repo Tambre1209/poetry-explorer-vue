@@ -1,5 +1,5 @@
 <script setup>
-const emit = defineEmits(['navigate', 'fetch-random'])
+    const emit = defineEmits(['navigate', 'fetch-random'])
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const emit = defineEmits(['navigate', 'fetch-random'])
   </header>
 
   <!-- Desktop Sidebar -->
-  <aside class="w-72 bg-nav-bg px-10 py-12 hidden md:flex flex-col gap-12 shrink-0 h-screen sticky top-0 border-r border-stone-200/40">
+  <aside class="w-72 bg-nav-bg px-10 py-12 hidden md:flex flex-col gap-12 shrink-0 h-screen sticky top-0 self-start border-r border-stone-200/40">
     <div class="flex flex-col gap-4">
       <div class="w-16 h-16 bg-accent flex items-center justify-center rounded-sm">
         <svg class="w-8 h-8 text-nav-bg" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
