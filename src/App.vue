@@ -37,14 +37,13 @@ const apiError = ref(null)
 const fetchRandom = async () => {
     isLoading.value = true
     apiError.value = null
-    currentView.value = 'random' // Fix: Set view to 'random' to enable sidebar highlight
     try {
         const response = await fetch('https://poetrydb.org/random/1')
         const data = await response.json()
 
         if (Array.isArray(data) && data.length > 0) {
             selectedPoem.value = data[0]
-            currentView.value = 'random' // Fix: Maintain state for active nav
+            currentView.value = 'random' // only set once poem data actually exists
             currentSearch.results = []
         } else {
             throw new Error('No poem found')
